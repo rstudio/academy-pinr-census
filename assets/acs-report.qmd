@@ -1,0 +1,76 @@
+---
+title: "American Community Survey"
+format: 
+  html:
+    embed-resources: true
+    df-print: paged
+    toc: true
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+#| label: setup
+source("census_06_debug.R")
+
+acs <- read_years(2005:2019, dir = "data")
+
+acs_state <- acs |> 
+  filter(state == "Texas")
+
+state_region <- acs_state |> 
+  pull(region) |> 
+  unique()
+
+state_division <- acs_state |> 
+  pull(division) |> 
+  unique()
+
+acs_region <- acs |> 
+  filter(region == state_region)
+
+acs_division <- acs |> 
+  filter(division == state_division)
+```
+
+## Population size
+
+### How has Texas's population changed over time?
+
+```{r}
+acs_state |> 
+  ggplot(aes(year, total_pop)) +
+  geom_smooth()
+```
+
+### How does Texas's population compare to other states in the West South Central division?
+
+```{r}
+acs_division |>
+  plot_var_by(by = state)
+```
+
+## Regional details
+
+### What's the breakdown of predominant education for states in the South region?
+
+```{r}
+acs_region |>
+  plot_var_by(var = predominant_education, by = state)
+```
+
+### How common has homeownership been during these years in the South region?
+
+```{r}
+acs_region |> 
+  plot_var_by(owner_occupied, by = state)
+```
+
+### What's the proportion of cognitive difficulty by sex in the South region?
+
+```{r}
+read_csv("data/cognitive_difficulty.csv") |> 
+  plot_over_time(df = acs_region, facet = state_abb)
+```

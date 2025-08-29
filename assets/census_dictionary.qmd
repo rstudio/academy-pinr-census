@@ -1,0 +1,129 @@
+---
+title: "Census Data Dictionary"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+library(knitr)
+library(kableExtra)
+```
+
+This data comes from the [American Community Survey](https://www.census.gov/programs-surveys/acs/about.html) (ACS), an ongoing, comprehensive survey administered by the [United States Census Bureau](https://data.census.gov/) to better understand demographic, social, economic and other characteristics within the US population.
+
+These values represent estimates (not precise measurements) and each have associated [margins of error](https://walker-data.com/tidycensus/articles/margins-of-error.html), which are not represented here. The data were retrieved using [tidycensus](https://walker-data.com/tidycensus/index.html), an R package that interfaces with the [Census Bureau's data API](https://data.census.gov/).
+
+## General ACS Data
+
+This subset of demographic, economic, health and housing data from the American Community Survey includes all 50 US states from 2005 to 2019. The values in this data set are derived from the ACS 1-year estimates for each state, based on data collected over a single year. 
+
+General ACS data is provided across 15 files, divided by year:
+
+* "acs-2005.csv"
+* "acs-2006.csv"
+* "acs-2007.csv"
+* "acs-2008.csv"
+* "acs-2009.csv"
+* "acs-2010.csv"
+* "acs-2011.csv"
+* "acs-2012.csv"
+* "acs-2013.csv"
+* "acs-2014.csv"
+* "acs-2015.csv"
+* "acs-2016.csv"
+* "acs-2017.csv"
+* "acs-2018.csv"
+* "acs-2019.csv"
+  
+
+```{r}
+# Create a data dictionary
+data_dict <- tibble::tribble(
+  ~variable, ~description,
+  
+  # Year and geography
+  "year", "Year",
+  "state", "State",
+  "state_abb", "State abbreviation",
+  "division", "Geographic division",
+  "region", "Geographic region",
+  
+  # Basic Demographics
+  "total_pop", "Total population",
+  "male_pop", "Male population",
+  "female_pop", "Female population",
+  "med_age", "Median age",
+  "predominant_education", "Highest educational attainment most common among people aged 25 years and over",
+  "bachelor_degree", "Number of people 25 years and over with a bachelor's degree or higher",
+
+  # Finance/Economics
+  "med_income", "Median Household Income",
+  "med_home_value", "Median Home Value",
+  "med_gross_rent", "Median Gross Rent",
+  "unemployed", "Number of unemployed people",
+  "below_poverty", "Number of people below the federal poverty Level",
+  "mortgaged_housing", "Number of housing units with a mortgage",
+  "food_stamps", "Number of households that received Food Stamps/SNAP in the past 12 months",
+  "gini_index", "Gini index of inequality",
+
+  # Health Insurance
+  "health_insurance", "Number of people with health insurance (one or more insurance items allocated)",
+  "no_health_insurance", "Number of people with no health insurance",
+  "employer_health_insurance", "Number of people with employer-based health insurance",
+  "medicare", "Number of people with Medicare coverage",
+  "medicaid", "Number of people with Medicaid coverage",
+
+  # Housing
+  "housing_units", "Total housing units",
+  "med_year_built", "Median year structure housing structures were built",
+  "household_size", "Average number of persons per housing unit",
+  "occupied_housing", "Number of housing units occupied",
+  "owner_occupied", "Number of owner-occupied housing units",
+  "renter_occupied", "Number of renter-occupied housing units",
+  
+  # Utilities
+  "predominant_heat", "Heating fuel most common in housing units",
+  "gas_heat", "Number of housing units with gas heating",
+  "electric_heat", "Number of housing units with electric heating",
+  "no_heat", "Number of housing units with no heating",
+)
+```
+
+### Data Dictionary
+
+The dictionary below contains a number of geographical grouping variables and a selection of variables from the American Community Survey (1-year estimates), roughly categorized by topic.
+
+```{r}
+# Print the data dictionary as a table
+kable(data_dict, col.names = c("Variable", "Description")) |>
+  kable_styling() |>
+  group_rows("Year and Geographic Identity", 1, 5) |>
+  group_rows("Demographics", 6, 11) |>
+  group_rows("Economics and Finance", 12, 19) |>
+  group_rows("Health Insurance", 20, 24) |> 
+  group_rows("Housing", 25, 30) |> 
+  group_rows("Utilities", 31, 34)
+```
+
+## Supplemental ACS Data
+
+These data sets offer greater detail of particular populations divided by demographic strata, such as age and sex, or by some other identifying characteristic. They're drawn from the American Community Survey for all 50 US states from 2005 to 2019 -- or for a subset of these years in which such data is available. 
+
+Supplemental ACS data is made available in 8 files, divided by topic. Two files show detailed population breakdowns of persons enrolled in Medicaid or Medicare:
+
+  * "medicaid.csv"
+  * "medicare.csv"
+
+Four additional files show population breakdowns of persons with certain difficulties: 
+
+  * "ambulatory_difficulty.csv"
+  * "cognitive_difficulty.csv"
+  * "hearing_difficulty.csv"
+  * "vision_difficulty.csv"
+
+These first six files stratify persons by sex and age.
+
+Two additional files indicate numbers of persons by categorical identifier, either of educational attainment (highest level of education achieved) or by heating fuel used in the home. These two files also specify predominant categories for a given state and year:
+
+  * "educational_attainment.csv"
+  * "heating_fuel.csv"

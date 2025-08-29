@@ -1,0 +1,88 @@
+---
+title: "Function-writing best practices"
+format: html
+---
+
+# Instructions
+
+This week you learned about best practices for function writing, including incorporating validation and stopping into your functions. In this milestone, you'll add validation and stopping conditions to `plot_over_time()`.
+
+To learn more about the variables contained in the data set, refer to the data dictionary: https://rsacdn.link/milestones/internal/pinr/census/assets/census_dictionary.html
+
+# Milestone
+
+```{r}
+#| label: setup
+#| include: false
+source("census_05_best-practices.R")
+# Load your packages here
+
+```
+
+## Milestone 5
+
+In this milestone, you'll practice using the `cli` package to handle unexpected or unwanted situations with data.
+
+## Recreation
+
+Improve `plot_over_time()` by adding validation and stopping to respond to mistaken use or unprepared data.
+
+The script `census_05_best-practices.R` contains all the functions you've written so far, including `plot_over_time()`. Modify that function to account for the following four situations:
+
+1. Check if `measure` is a data frame, and throw an error if it's not. Use the error message "`measure` must be a data frame."
+
+2. Check if `df` is a data frame, and throw an error if it's not. Use the error message "`df` must be a data frame."
+
+3. Check that `measure` contains numeric variables partitioned by sex and age, and throw an error if it does not. Use the error message "`measure` must include numeric variables partitioned by sex and age." (See the hints below.)
+
+4. Check to make sure that the column referenced by `facet` does not contain numeric data and throw an error if it does. Use the error message "The `facet` column must be character or factor, not <<class>>." Replace "<<class>>" with the class of the column provided.
+
+Use the cli package to signal errors. 
+
+*Hint #1*: The following code should serve as a starting point to check whether `measure` is entirely numeric after the first three columns:
+
+```{r}
+#| label: recreation-01-hint-01
+#| eval: false
+numeric_measures <- measure |> 
+  select(-c(1:3)) |> 
+  map(is.numeric) |> 
+  unlist()
+
+if (!all(numeric_measures)) {...}
+```
+
+*Hint #2*: To check whether column names refer to sex and age strata, replace `all(numeric_measures)` with combinations of `any()`, `str_detect()`, and `colnames()`. The string `"male"` will find "male" or "female", just as the string `" to "` will find columns with age groupings.
+
+When you're done, run the following code chunk to confirm that your function works as expected.
+
+```{r}
+#| label: compare
+#| error: true
+hearing <- read_csv("data/hearing_difficulty.csv")
+acs <- read_years()
+acs_2019 <- read_years(2019)
+
+# Should produce the error message "`measure` must be a data frame."
+plot_over_time(measure = list(1, 2, 3), df = acs, by = age, facet = region)
+
+# Should produce the error message "`measure` must include numeric variables partitioned by sex and age."
+plot_over_time(measure = acs_2019, df = acs, by = age, facet = region)
+
+# Should produce the error message "`df` must be a data frame."
+plot_over_time(measure = hearing, df = list(1, 2, 3), by = age, facet = region)
+
+# Should produce the error message "The `facet` column must be character or factor, not numeric."
+plot_over_time(measure = hearing, df = acs, by = age, facet = total_pop)
+
+# Should work successfully
+plot_over_time(measure = hearing, df = acs, by = age, facet = region)
+```
+
+## Extension
+
+Stretch yourself! Come up with a plan to try out new things with material from this week or past weeks, and see what you can make of it. Alternatively, try out a new package that you've not yet had time to come to grips with. As always, we offer a few suggestions here:
+
+* Improve `summarize_divisions()` or other functions in `census_05_best-practices.R` by adding validation steps.
+* Incorporate some of the fancy styling made available by the `cli` package. See the function help documents for some examples.
+* Add argument validation to functions you use in your work outside Academy.

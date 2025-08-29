@@ -1,0 +1,107 @@
+---
+title: "Functions"
+format: html
+---
+
+# Instructions
+
+Welcome to your first project milestone! Over the next six weeks, you will write your own functions to explore data from the American Community Survey, conducted by the US Census to study changes in the populace over time.
+
+To learn more about the variables contained in the data set, refer to the data dictionary: https://rsacdn.link/milestones/internal/pinr/census/assets/census_dictionary.html
+
+## How to complete a milestone
+
+Each milestone will require you to write functions in an R script, edit a Quarto document, or both.
+
+For each milestone, you will need to: 
+
+1. **Recreate a result,** like a function that creates a plot or table. This will require you to use the skills you have studied that week.
+
+2. **Extend the result.** This will require you to teach yourself something new from a help page, website, book, or the world at large. Being able to teach yourself new parts of a computer language is what will make you a truly competent programmer---and we are here to help. 
+
+You'll share your extension with your groupmates at the weekly meeting, and show them how they could do the same. 
+
+Follow the instructions below to complete this milestone.
+
+# Milestone
+
+## Milestone 1
+
+In this milestone, you'll write a function to read in various data sets from the American Community Survey (ACS).
+
+## Recreation
+
+### Part 1 - Function
+
+The data sets we'll use in this project are saved in the `data/` folder. Most of them contain one year's worth of data drawn from the American Community Survey, conducted by the US Census. A few additional files like "medicaid.csv" provide greater details, with values partitioned by factors like age and sex.
+
+Run the following code to take a look at one year's data. This particular file includes information from the most recent year:
+
+```{r}
+#| label: read-2019
+readr::read_csv("data/acs-2019.csv")
+```
+
+Write a function `read_year()` to read and prepare files like this one. The function should complete three tasks:
+
+1. Convert occupied housing variables to percentages of households. Divide each of the following by `occupied_housing`:
+  * `owner_occupied`
+  * `renter_occupied`
+  * `gas_heat`
+  * `electric_heat`
+  * `no_heat`
+  
+2. Next, convert other housing variables to percentages of housing units. Divide each of the following by `housing_units`:
+  * `occupied_housing`
+  * `mortgaged_housing`
+  
+3. Reorder housing variables in this order, after `housing_units`:
+  * `med_home_value`
+  * `med_gross_rent`
+  * `med_year_built`
+  * `household_size`
+  * `occupied_housing`
+  * `renter_occupied`
+  * `owner_occupied`
+  * `mortgaged_housing`
+
+Define this function in your "census_01_functions.R" file.
+
+When you're done, un-comment and run the following code to confirm that your function works as expected. 
+```{r}
+#| label: read-year-test
+#| message: false
+# acs_2019 <- read_year("data/acs-2019.csv")
+# solution1 <-
+#   read_csv(
+#     "solutions/solution_01_pt1.csv"
+#   )
+# waldo::compare(acs_2019, solution1, tolerance = 1e-4)
+```
+
+### Part 2 - Summarize across columns
+
+Use `summarize()` with `across()` to find the average value of each numeric column in the `acs_2019` data set. (Don't worry about ignoring `NA` values for now.) Save this result as `acs_2019_avg`:
+
+```{r}
+#| label: recreation-2
+
+```
+
+When you're done, un-comment and run the following code to confirm that everything works as expected.
+
+```{r}
+#| label: recreation-2-test
+#| message: false
+# solution2 <- read_csv("solutions/solution_01_pt2.csv")
+# waldo::compare(acs_2019_avg, solution2, tolerance = 1e-4)
+```
+
+## Extension
+
+Take things further. Instead of recreating a process we lay out, make your own plans for exploring the data and see how far you can go. If you're looking for inspiration, consider the following suggestions:
+
+* Load one of the secondary files like "medicaid.csv" or "educational_attainment.csv" and use `across()` to find summary values---minimum, average, and maximum--of each numerical column.
+* Write another function (or more) to further process or explore the ACS data sets.
+* Write a function to visualize values in a column from any of the files of data.
+* Incorporate `across()` into some part of your data workflow outside Academy.

@@ -1,0 +1,139 @@
+---
+title: "Iterate with for loops"
+format: html
+---
+
+# Instructions
+
+This week, you learned how to write for loops and practiced purrr. In this milestone, you'll continue writing functions to create plots showing temporal trends in demographic composition. You'll also recreate this Quarto report that calls the functions you've written: https://rsacdn.link/milestones/internal/pinr/census/assets/acs-report.html
+
+To learn more about the variables contained in the data set, refer to the data dictionary [here](https://rsacdn.link/milestones/internal/pinr/census/assets/census_dictionary.html){target="_blank" rel="noopener noreferrer"}.
+
+# Milestone
+
+```{r}
+#| label: setup
+#| include: false
+source("census_04_loops.R")
+# Load your packages here
+
+```
+
+## Milestone 4
+
+In this milestone, you'll gain more experience using tidy evaluation by creating a function that visualizes demographic strata over time.
+
+## Recreation
+
+### Part 1 - Proportions over time
+
+Write a function called `plot_over_time()` to plot temporal trends in demographic composition, faceted by some variable. This function should do the following:
+
+* Expect four arguments---`measure`, `df`, `by`, and `facet`. Every argument but `measure` should have a default value:
+  * `measure` should accept a tibble containing supplemental data, like "data/hearing_difficulty.csv"
+  * `df` should default to `acs`, a tibble containing ACS data from every available year in the "data" folder.
+  * `by` should default to `sex`
+  * `facet` should default to `region`
+  
+* Create a `geom_smooth()` trend line with the `year` value on the X-axis and `proportion` on the Y-axis. Set the `color` aesthetic to the `by` variable. 
+
+*Hint:* See the worked example below for guidance on how to calculate `proportion`.
+
+Using the File Explorer on the left, navigate to the `images/` directory, then click on `image_04.png` to open an image in the Editor pane. **Your plots should look like this.**
+
+To help get you started, here is a worked example using supplementary data stored in `hearing_difficulty.csv` to plot proportions of males and females with hearing difficulty over time, faceted by region. You may wish to run this code line by line to better understand each data transformation step. 
+
+Study the code below closely and adapt it when writing your function, `plot_over_time()`.
+
+```{r}
+#| label: example
+#| eval: false
+library(tidyverse)
+source("census_04_loops.R")
+
+# read in the supplementary data
+hearing <- read_csv("data/hearing_difficulty.csv") 
+
+# read in the ACS data from all years
+acs <- read_years() 
+
+# create a "long" data frame with columns for `sex` and `age`
+hearing_long <- 
+  hearing |> 
+    pivot_longer(cols = -c(year:total)) |> 
+    mutate(
+        sex = str_remove_all(name, " .*"),
+        age = fct_inorder(str_remove_all(name, "^[a-z]+ ")),
+        proportion = value / total
+    )
+
+# join the ACS data with the supplementary data, calculate proportions, and plot
+acs |> 
+    select(year, where(is.character)) |> 
+    left_join(hearing_long, by = c("year", "state")) |> 
+    group_by(year, state, sex, region) |> 
+    summarize(proportion = sum(proportion)) |>
+    ungroup() |> 
+    ggplot(aes(year,proportion, color = sex)) +
+    geom_smooth() + 
+    facet_wrap(vars(region))
+```
+
+Write your `plot_over_time()` function in the script `census_04_loops.R`. When you're done, run the following code chunk to test your function. Your plots should match the ones displayed above.
+
+```{r}
+#| label: compare
+acs <- read_years()
+hearing <- read_csv("data/hearing_difficulty.csv")
+hearing |> 
+  plot_over_time(acs, by = sex, facet = region)
+```
+
+### Part 2 - Report
+
+Next, use the functions in `census_04_loops.R` to recreate this Quarto report: 
+https://rsacdn.link/milestones/internal/pinr/census/assets/acs-report.html
+
+To re-create the report, first open a new Quarto document. You will need to: 
+
+1. Click **File > New file > Quarto Document**. 
+
+2. Give your Quarto file a title, then click **Create**. 
+
+3. Add R code and text to your Quarto document to recreate the report. Pay attention to chunk options (e.g. `echo`, `warning`, etc.) and markdown formatting (e.g. section headers) to make your report look like the example. 
+
+*Hint #1*: Make sure you source the `census_04_loops.R` file in the setup chunk of your Quarto document.
+
+*Hint #2*: Much of the report will focus on just one state, along with its division and region. After you load the `acs` data set, it's a good idea to create filtered data sets like this:
+
+```{r}
+#| label: example-filter
+#| eval: false
+acs_state <- acs |> 
+  filter(state == "Texas")
+
+state_region <- acs_state |> 
+  pull(region) |> 
+  unique()
+
+state_division <- acs_state |> 
+  pull(division) |> 
+  unique()
+
+acs_region <- acs |> 
+  filter(region == state_region)
+
+acs_division <- acs |> 
+  filter(division == state_division)
+```
+
+## Extension
+
+Run with it! See how far you can take this week's material. If you're drawing a blank about what you might do, consider one of the following suggestions:
+
+* Improve upon `plot_over_time()` by adding a meaningful title and converting the Y-axis to percentages.
+* Write another function for working with data like "educational_attainment.csv" and "heating_fuel.csv".
+* Use `map()` to pass a vector of `facet` columns into `plot_over_time()`. If that's not enough, go further with `map2()` to pass two vectors of columns to the `by` and `facet` variables.
+* Write an alternative version of `plot_over_time()` that works with `walk()` to save plots as files.
+* Add inline code to `acs-report.qmd` to characterize how Texas ranks against neighboring states for certain variables.
+* Introduce `map2()` into some aspect of your working with data outside Academy.

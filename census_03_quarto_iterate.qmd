@@ -1,0 +1,155 @@
+---
+title: "Iterate and write functions with the tidyverse"
+format: html
+---
+
+# Instructions
+
+In this milestone, you'll use tidy evaluation to write a function that plots values in ACS data, with one variable grouped by another.
+
+To learn more about the variables contained in the data set, refer to the data dictionary: https://rsacdn.link/milestones/internal/pinr/census/assets/census_dictionary.html
+
+# Milestone
+
+```{r}
+#| label: setup
+#| include: false
+source("census_03_iterate.R")
+# Load your packages here
+
+```
+
+## Milestone 3
+
+In this milestone, you'll use tidy evaluation to write a function that plots variables in ACS data.
+
+## Recreation
+
+### Part 1 - Iterate
+
+The script `census_03_iterate.R` contains all the functions you've written so far. In this script, write a new function called `read_years()` (plural). By default, this function should use `read_year()` and `map()` to read every year of data between 2005 and 2019, but it should also accept other ranges or a single year to function like `read_year()`.
+
+`read_years()` should fulfill a few expectations:
+
+* Accept two arguments, `years` and `dir`. 
+
+* `years` should have a default value of `2005:2019`
+
+* `dir` should default to "data".
+
+* Read all of the relevant files from "data" an return a single data frame. Consider using `fs::dir_ls()` (or`list.files()` if you prefer), `read_year()`, `map()`, and `list_rbind()` to read all of the relevant files from "data" and return a single data frame. 
+
+*Hint:* The following code will create a character vector of paths to CSV files from the "data" folder and select those that only include certain years as part of their file names.
+
+```{r}
+#| label: recreation-01-hint
+#| eval: false
+library(stringr)
+
+years <- 2005:2010 # create a vector of numbers 2005 through 2010
+
+filenames <-
+  # list all files with a ".csv" extension in the "data" folder
+  list.files(
+    path = "data", 
+    pattern = ".csv", 
+    full.names = TRUE
+  ) |> 
+  str_subset(paste0(years, collapse = "|"))
+```
+
+When you're done, un-comment and run the following code to see if your function works as expected.
+
+```{r}
+#| label: compare-1
+#| message: false
+
+# solution1 <- readr::read_csv("solutions/solution_03_pt1a.csv")
+# acs <- read_years()
+# waldo::compare(acs, solution1, tolerance = 1e-4)
+# 
+# solution2 <- readr::read_csv("solutions/solution_03_pt1b.csv")
+# acs_2018 <- read_years(2018)
+# waldo::compare(acs_2018, solution2, tolerance = 1e-4)
+```
+
+### Part 2 - Embrace
+
+In `census_03_iterate.R`, write a new function named `plot_var_by()` that uses embracing (`{{ }}`) to plot one variable by some other grouping variable. This function should fulfill a few expectations:
+
+* Accept three arguments, `data`, `var` and `by`.
+
+* If `var` is numeric, plot a boxplot with the following characteristics: 
+  * `var` on the X-axis
+  * `by` on the Y-axis, ordered by values of `var`
+  
+* If `var` is not numeric, plot a barplot, with the following characteristics:
+  * `var` on the Y-axis
+  * `var` mapped to the `fill` aesthetic
+  * `by` defines facets
+  
+
+To detect if `var` is numeric or not, first extract `var` from `data`, like this:
+
+```{r}
+#| label: recreation-02-hint
+#| eval: false
+col_var <-
+  data |> 
+  pull({{ var }}) 
+```
+
+Using the File Explorer on the left, navigate to the `images/` directory, then click on `image_03_numeric.png` to open an image in the Editor pane. **Your plots should look like this if `var` is numeric.**
+
+*Hint:* Here is a worked example for creating the boxplot shown above using data from 2019. You can adapt this code for writing your function.
+
+```{r}
+#| label: example-plot-numeric
+#| eval: false
+acs_2019 <- read_years(2019)
+
+acs_2019 |>
+  mutate(division = fct_reorder(division, total_pop, .na_rm = TRUE)) |>
+  ggplot(aes(y = division, x = total_pop)) + 
+  geom_boxplot()
+```
+
+
+Using the File Explorer on the left, navigate to the `images/` directory, then click on `image_03_categorical.png` to open an image in the Editor pane. **Your plot should look like this if `var` is categorical.**
+
+*Hint:* Here is a worked example for creating the barplot shown above using data from 2019.
+You can adapt this code for writing your function.
+
+```{r}
+#| label: example-plot-categorical
+#| eval: false
+acs_2019 |>
+  ggplot(aes(y = predominant_heat, fill = predominant_heat)) + 
+  geom_bar(
+    position = position_dodge(),
+    show.legend = FALSE
+  ) + 
+  facet_wrap(vars(region))
+```
+
+When you're done, run the following code chunk to test your function. Your plots should match the ones displayed above. 
+
+```{r}
+#| label: compare-4
+acs_2019 <- read_years(2019)
+
+acs_2019 |> 
+  plot_var_by(total_pop, by = division)
+
+acs_2019 |> 
+  plot_var_by(predominant_heat, by = region)
+```
+
+## Extension
+
+Spread your wings! See what you can do with these new techniques. As always, we include some suggestions below:
+
+* Write an alternative version of `read_year()` called `write_year()` that saves a modified CSV file beside the original. Use it with `walk()` to iterate along a list of file names to save these files without returning a list.
+* Rewrite `summarize_divisions()` as `summarize_by()`, giving users the option of choosing a different grouping variable.
+* Write a different function to create more complex plots that incorporate faceting or use different geoms---for example, make a heat map that displays the distribution of a given variable faceted by location and year.
+* Write a new function using `{{ }}` to improve some element of your data workflow outside Academy.

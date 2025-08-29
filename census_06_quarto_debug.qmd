@@ -1,0 +1,103 @@
+---
+title: "Debugging and state management"
+format: html
+---
+
+# Instructions
+
+For your final milestone, you'll create a parameterized Quarto report and write a function to render that report, and then create one report for each state in a vector.
+
+To learn more about the variables contained in the data set, refer to the data dictionary: https://rsacdn.link/milestones/internal/pinr/census/assets/census_dictionary.html
+
+# Milestone
+
+```{r}
+#| label: setup
+#| include: false
+
+# Load your packages here
+
+```
+
+## Milestone 6
+
+In this last milestone, you'll parameterize the Quarto report you made in Milestone 4 so that it will work for any state. Then, you'll write a function to render that report and use it to create multiple reports.
+
+Note: You should see a completed version of the report from Milestone 4 in the file `assets/acs-report.qmd` file in your Files pane.
+
+## Recreation
+
+### Part 1 - Parameterize
+
+First, parameterize the data set analyzed in `acs-report.qmd` with the following steps:
+
+1. Add a `state` parameter to the YAML header like this:
+
+```
+---
+title: "American Community Survey"
+format: 
+  html:
+    embed-resources: true
+execute:
+  echo: false
+  message: false
+  warning: false
+params:
+  state: "Texas"
+---
+```
+
+2. Edit the line where the specific state is filtered (`acs_state <- filter(acs, state == "Texas")`) to use `params$state` instead:
+
+```{r}
+#| label: example-filter
+#| eval: false
+acs_state <- acs |> 
+  filter(state == params$state)
+```
+
+3. Replace any in-line mention of "Texas" with `{r} params$state`. At the same time, replace "South" (as in the region) with `{r} state_region` and "West South Central" with `{r} state_division`.
+
+These three changes will allow you to use this report for any state. Try it out by changing `state: "Texas"` to `state: "Washington"` and then rendering the report. 
+
+### Part 2 - Function
+
+Next, write a function named `acs_report()` that renders your parameterized report. Your function should:
+
+* Take one argument: `state`, a string specifying the state to use in the report. 
+* Use `quarto::quarto_render()` to render `acs-report.qmd`, setting the parameter `state` to `state`.
+* Name the output file according to a string derived from `state`.
+
+*Hint:* Here's an example call to `quarto::quarto_render()` that renders a report called `color.qmd` that has a `color` parameter:
+
+```{r}
+#| label: color-example
+#| eval: false
+quarto::quarto_render(
+  "color.qmd", 
+  execute_params = list(color = "blue"),
+  output_file = "blue.html"
+)
+```
+
+Write `acs_report()` in `census_06_debug.R`.
+
+### Part 3 - Iterate
+
+Next, use `acs_report()` and `purrr::walk()` to create a report for each state in the following vector:
+
+```{r}
+#| label: state-vec
+states <- c("Louisiana", "Oregon", "Illinois")
+```
+
+## Extension
+
+For your extension, expand upon the report in any way that you'd like. Here are a few suggestions:
+
+* Revise functions in `census_06_debug.R` to highlight a grouping variable like state, division, or region. Use these revised functions in your report so that the focused state is always easy to see. 
+* In `acs-report.qmd`, add text descriptions after visualizations and tables, calling on inline code to describe how `params$state` ranks against other states in a given measure. 
+* Add a `years` parameter to your report, allowing closer consideration of specific years of data.
+* Add new functions for visualizing and summarizing data in your report, perhaps even incorporating additional data sources at the county level.
+* Better yet, parameterize a report using data from some aspect of your work outside of Academy.

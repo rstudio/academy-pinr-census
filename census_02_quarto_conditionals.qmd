@@ -1,0 +1,105 @@
+---
+title: "Control function flow"
+format: html
+---
+
+# Instructions
+
+This week, you learned how to work with lists, iterate with purrr, and control function flow with conditional statements. In this milestone, you'll use what you've learned to write a new function and then iterate over a vector of inputs to that function.
+
+To learn more about the variables contained in the data set, refer to the data dictionary: https://rsacdn.link/milestones/internal/pinr/census/assets/census_dictionary.html
+
+# Milestone
+
+```{r}
+#| label: setup
+#| include: false
+source("census_02_conditionals.R")
+# Load your packages here
+
+```
+
+## Milestone 2
+
+In this milestone, you'll write a function to summarize variables for each geographic division. Then, you'll iterate over a vector of variables to produce many summary tables at once.
+
+## Recreation
+
+### Part 1 - Summarize outcomes for each division
+
+First, in the script `census_02_conditionals.R`, create a function named `summarize_divisions()`. `summarize_divisions()` should take two arguments:
+
+* `data`: A processed ACS data set, like the result of `read_year("data/acs-2019.csv")`.
+* `var`: A string containing the name of a variable, like `total_pop`.
+
+Then, `summarize_divisions()` should create a summary table displaying the total `var` value for each division in `data`, like this:
+
+```{r}
+#| label: recreate-this
+#| echo: false
+solution <- readr::read_csv("solutions/solution_02_pt1.csv")
+solution
+```
+
+We’ll soon learn some neat tricks for working with variables in a data set. Until then, we already know how to work with column names as strings. One method is to use `pivot_longer()` in concert with `pivot_wider()`, as shown in the following hint. (Note: You will need to add a number of other data wrangling steps to this pipeline.)
+
+```{r}
+#| label: get-started
+#| eval: false
+data |> 
+  # select `division` and all numeric variables; remove `year`
+  select(division, where(is.numeric), -year) |>
+  # pivot the data into a longer format
+  pivot_longer(-division) |>
+  # filter to rows for your chose variable, `var`
+  filter(name == var) |> 
+  # add more data wrangling steps below...
+  ____
+```
+
+*Hint 1:* Don't forget to group and summarize the data and arrange rows in the right order to match the solution.
+
+*Hint 2:* You will need a `pivot_wider()` step at the end of your data wrangling pipeline
+
+When you're done, un-comment and run the following code to see if your function works as expected.
+
+```{r}
+#| label: compare-1
+#| message: false
+
+# acs_2019 <- read_year("data/acs-2019.csv")
+# result <- summarize_divisions(acs_2019, var = "total_pop")
+# waldo::compare(
+#   result, 
+#   solution, 
+#   tolerance = 1e-4, 
+#   ignore_attr = c("class", "groups")
+# )
+```
+
+### Part 2 - Iterate
+
+Next, use `purrr::map()` and `summarize_divisions()`, setting `data` to `acs_2019` to create a summary table for each outcome variable in the following vector:
+
+```{r}
+#| label: outcome-vec
+#| eval: false
+c("employer_health_insurance", "medicare", "medicaid")
+```
+
+Write your code below.
+
+```{r}
+#| label: recreation-2
+
+```
+
+## Extension
+
+Go even further. Make plans to apply techniques from week 2 or try something completely new. If you're looking for inspiration, consider the following suggestions:
+
+* Some variables might better be summarized by taking the mean or median. Add an argument to `summarize_divisions()` to allow the choice of some summary function other than `sum()`. 
+* Write a complementary function called `summarize_strata()` to work with data from supplemental data files like "ambulatory_difficulty.csv", "medicaid.csv", and others containing data divided by demographic strata.
+* Find a new package to work with the data or to add something to a visualization, incorporating it into a new function.
+* Write another function (or functions) to further process or explore the ACS data sets.
+* Introduce `map()` to improve some aspect of your working with data outside Academy.
