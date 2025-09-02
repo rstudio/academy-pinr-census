@@ -42,6 +42,6 @@ Once you have set up your project in Positron, you will have access to all of th
 
 Milestone files are numbered sequentially according to the week of the course. For example:
 
-Week 1 = `census_01_quarto_functions.qmd`
-Week 2 = `census_01_quarto_conditionals.qmd`
+Week 1 = `census_01_quarto_functions.qmd`  
+Week 2 = `census_01_quarto_conditionals.qmd`  
 etc.
