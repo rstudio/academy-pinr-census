@@ -42,7 +42,11 @@ Run the following code to take a look at one year's data. This particular file i
 readr::read_csv("data/acs-2019.csv")
 ```
 
-Write a function `read_year()` to read and prepare files like this one. The function should complete three tasks:
+Write a function `read_year()` to read and prepare files like this one.  
+
+The `read_year()` function should accept a single argument, `file`, which is the path to a .csv file with data for a given year, e.g. "data/acs-2019.csv"
+
+Then, the function should complete several tasks:
 
 1. Convert occupied housing variables to percentages of households. Divide each of the following by `occupied_housing`:
   * `owner_occupied`
