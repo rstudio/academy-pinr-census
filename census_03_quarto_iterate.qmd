@@ -99,7 +99,7 @@ col_var <-
   pull({{ var }}) 
 ```
 
-Using the File Explorer on the left, navigate to the `images/` directory, then click on `image_03_numeric.png` to open an image in the Editor pane. **Your plots should look like this if `var` is numeric.**
+Using the File Explorer, navigate to the `images/` directory, then click on `image_03_numeric.png` to open an image. **Your plots should look like this if `var` is numeric.**
 
 *Hint:* Here is a worked example for creating the boxplot shown above using data from 2019. You can adapt this code for writing your function.
 
@@ -115,7 +115,7 @@ acs_2019 |>
 ```
 
 
-Using the File Explorer on the left, navigate to the `images/` directory, then click on `image_03_categorical.png` to open an image in the Editor pane. **Your plot should look like this if `var` is categorical.**
+Using the File Explorer, navigate to the `images/` directory, then click on `image_03_categorical.png` to open an image. **Your plot should look like this if `var` is categorical.**
 
 *Hint:* Here is a worked example for creating the barplot shown above using data from 2019.
 You can adapt this code for writing your function.

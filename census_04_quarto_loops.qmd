@@ -39,7 +39,7 @@ Write a function called `plot_over_time()` to plot temporal trends in demographi
 
 *Hint:* See the worked example below for guidance on how to calculate `proportion`.
 
-Using the File Explorer on the left, navigate to the `images/` directory, then click on `image_04.png` to open an image in the Editor pane. **Your plots should look like this.**
+Using the File Explorer, navigate to the `images/` directory, then click on `image_04.png` to open an image. **Your plots should look like this.**
 
 To help get you started, here is a worked example using supplementary data stored in `hearing_difficulty.csv` to plot proportions of males and females with hearing difficulty over time, faceted by region. You may wish to run this code line by line to better understand each data transformation step. 
 
