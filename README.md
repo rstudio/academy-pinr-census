@@ -40,6 +40,6 @@ Once you have set up your project, you will have access to all of the milestone 
 
 Milestone files are numbered sequentially according to the week of the course. For example:
 
-Week 1 = `*_01_visualize.qmd`  
-Week 2 = `*_02_summarize.qmd`
+Week 1 = `*_01_quarto_functions.qmd`  
+Week 2 = `*_02_quarto_conditionals.qmd`
 etc.
