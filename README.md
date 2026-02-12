@@ -30,7 +30,7 @@ Note: This may take several minutes to complete.
 
 **Step 2: Open your first milestone.**
 
-1. Open the file ending in `*_01_visualize.qmd`
+1. Open the file ending in `*_01_quarto_functions.qmd`
 
 2. Follow the instructions in this file to complete the exercises
 
