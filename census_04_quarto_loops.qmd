@@ -5,9 +5,9 @@ format: html
 
 # Instructions
 
-This week, you learned how to write for loops and practiced purrr. In this milestone, you'll continue writing functions to create plots showing temporal trends in demographic composition. You'll also recreate this Quarto report that calls the functions you've written: https://rsacdn.link/milestones/internal/pinr/census/assets/acs-report.html
+This week, you learned how to write for loops and practiced purrr. In this milestone, you'll continue writing functions to create plots showing temporal trends in demographic composition. You'll also recreate this Quarto report that calls the functions you've written: https://rstudio.github.io/academy-pinr-census/assets/acs-report.html
 
-To learn more about the variables contained in the data set, refer to the data dictionary [here](https://rsacdn.link/milestones/internal/pinr/census/assets/census_dictionary.html){target="_blank" rel="noopener noreferrer"}.
+To learn more about the variables contained in the data set, refer to the data dictionary [here](https://rstudio.github.io/academy-pinr-census/assets/census_dictionary.html){target="_blank" rel="noopener noreferrer"}.
 
 # Milestone
 
@@ -92,7 +92,7 @@ hearing |>
 ### Part 2 - Report
 
 Next, use the functions in `census_04_loops.R` to recreate this Quarto report: 
-https://rsacdn.link/milestones/internal/pinr/census/assets/acs-report.html
+https://rstudio.github.io/academy-pinr-census/assets/acs-report.html
 
 To re-create the report, first open a new Quarto document. You will need to: 
 

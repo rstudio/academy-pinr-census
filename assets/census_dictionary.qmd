@@ -1,6 +1,8 @@
 ---
 title: "Census Data Dictionary"
-output: html_document
+format:
+  html:
+    embed-resources: true
 ---
 
 ```{r setup, include=FALSE}
