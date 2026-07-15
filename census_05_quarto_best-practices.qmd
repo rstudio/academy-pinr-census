@@ -7,7 +7,7 @@ format: html
 
 This week you learned about best practices for function writing, including incorporating validation and stopping into your functions. In this milestone, you'll add validation and stopping conditions to `plot_over_time()`.
 
-To learn more about the variables contained in the data set, refer to the data dictionary: https://rsacdn.link/milestones/internal/pinr/census/assets/census_dictionary.html
+To learn more about the variables contained in the data set, refer to the data dictionary: https://rstudio.github.io/academy-pinr-census/assets/census_dictionary.html
 
 # Milestone
 

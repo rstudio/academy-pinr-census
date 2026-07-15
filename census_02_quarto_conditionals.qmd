@@ -7,7 +7,7 @@ format: html
 
 This week, you learned how to work with lists, iterate with purrr, and control function flow with conditional statements. In this milestone, you'll use what you've learned to write a new function and then iterate over a vector of inputs to that function.
 
-To learn more about the variables contained in the data set, refer to the data dictionary: https://rsacdn.link/milestones/internal/pinr/census/assets/census_dictionary.html
+To learn more about the variables contained in the data set, refer to the data dictionary: https://rstudio.github.io/academy-pinr-census/assets/census_dictionary.html
 
 # Milestone
 
