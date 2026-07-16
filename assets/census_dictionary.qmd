@@ -21,24 +21,25 @@ This subset of demographic, economic, health and housing data from the American 
 
 General ACS data is provided across 15 files, divided by year:
 
-* "acs-2005.csv"
-* "acs-2006.csv"
-* "acs-2007.csv"
-* "acs-2008.csv"
-* "acs-2009.csv"
-* "acs-2010.csv"
-* "acs-2011.csv"
-* "acs-2012.csv"
-* "acs-2013.csv"
-* "acs-2014.csv"
-* "acs-2015.csv"
-* "acs-2016.csv"
-* "acs-2017.csv"
-* "acs-2018.csv"
-* "acs-2019.csv"
+* `acs-2005.csv`
+* `acs-2006.csv`
+* `acs-2007.csv`
+* `acs-2008.csv`
+* `acs-2009.csv`
+* `acs-2010.csv`
+* `acs-2011.csv`
+* `acs-2012.csv`
+* `acs-2013.csv`
+* `acs-2014.csv`
+* `acs-2015.csv`
+* `acs-2016.csv`
+* `acs-2017.csv`
+* `acs-2018.csv`
+* `acs-2019.csv`
   
 
 ```{r}
+#| echo: false
 # Create a data dictionary
 data_dict <- tibble::tribble(
   ~variable, ~description,
@@ -96,6 +97,7 @@ data_dict <- tibble::tribble(
 The dictionary below contains a number of geographical grouping variables and a selection of variables from the American Community Survey (1-year estimates), roughly categorized by topic.
 
 ```{r}
+#| echo: false
 # Print the data dictionary as a table
 kable(data_dict, col.names = c("Variable", "Description")) |>
   kable_styling() |>
@@ -113,19 +115,19 @@ These data sets offer greater detail of particular populations divided by demogr
 
 Supplemental ACS data is made available in 8 files, divided by topic. Two files show detailed population breakdowns of persons enrolled in Medicaid or Medicare:
 
-  * "medicaid.csv"
-  * "medicare.csv"
+  * `medicaid.csv`
+  * `medicare.csv`
 
 Four additional files show population breakdowns of persons with certain difficulties: 
 
-  * "ambulatory_difficulty.csv"
-  * "cognitive_difficulty.csv"
-  * "hearing_difficulty.csv"
-  * "vision_difficulty.csv"
+  * `ambulatory_difficulty.csv`
+  * `cognitive_difficulty.csv`
+  * `hearing_difficulty.csv`
+  * `vision_difficulty.csv`
 
 These first six files stratify persons by sex and age.
 
 Two additional files indicate numbers of persons by categorical identifier, either of educational attainment (highest level of education achieved) or by heating fuel used in the home. These two files also specify predominant categories for a given state and year:
 
-  * "educational_attainment.csv"
-  * "heating_fuel.csv"
+  * `educational_attainment.csv`
+  * `heating_fuel.csv`
